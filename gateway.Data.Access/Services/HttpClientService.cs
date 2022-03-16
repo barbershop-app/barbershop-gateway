@@ -1,8 +1,10 @@
 ﻿using gateway.Core.IServices;
+using gateway.Infrastructure.Entities.DTOs;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -22,28 +24,36 @@ namespace gateway.Data.Access.Services
             _configuration = configuration;
         }
 
-        public async Task<HttpResponseMessage> Get(string service, string controller, string action)
+        public async Task<HttpResponseDTO> Get(string service, string controller, string action)
         {
             var httpClient = _httpClientFactory.CreateClient("localhost");
 
-            using (var response = await httpClient.GetAsync(_configuration.GetValue<string>($"{service}/{controller}/{action}")))
+            using (var response = await httpClient.GetAsync($"{_configuration.GetValue<string>(service)}/{controller}/{action}"))
             {
-                return response;
+                var content = await response.Content.ReadAsStringAsync();
+
+                ExpandoObject? res = JsonConvert.DeserializeObject<ExpandoObject>(content);
+
+                return new HttpResponseDTO { StatusCode = response.StatusCode, Data = res };
             }
         }
 
-        public async Task<HttpResponseMessage> Get(string service, string controller, string action, string urlParameter)
+        public async Task<HttpResponseDTO> Get(string service, string controller, string action, string urlParameter)
         {
             var httpClient = _httpClientFactory.CreateClient("localhost");
 
-            using (var response = await httpClient.GetAsync(_configuration.GetValue<string>($"{service}/{controller}/{action}/{urlParameter}")))
+            using (var response = await httpClient.GetAsync($"{_configuration.GetValue<string>(service)}/{controller}/{action}/{urlParameter}"))
             {
-                return response;
+               var content = await response.Content.ReadAsStringAsync();
+
+               ExpandoObject? res = JsonConvert.DeserializeObject<ExpandoObject>(content);
+
+               return new HttpResponseDTO { StatusCode = response.StatusCode ,Data = res };
             }
         }
 
 
-        public async Task<HttpResponseMessage> Post(string service, string controller, string action , object values)
+        public async Task<HttpResponseDTO> Post(string service, string controller, string action , object values)
         {
             var httpClient = _httpClientFactory.CreateClient("localhost");
 
@@ -51,9 +61,13 @@ namespace gateway.Data.Access.Services
 
             var context = new StringContent(json, Encoding.UTF8, "application/json");
 
-            using (var response = await httpClient.PostAsync(_configuration.GetValue<string>($"{service}/{controller}/{action}"), context))
+            using (var response = await httpClient.PostAsync($"{_configuration.GetValue<string>(service)}/{controller}/{action}", context))
             {
-                return response;
+                var content = await response.Content.ReadAsStringAsync();
+
+                ExpandoObject? res = JsonConvert.DeserializeObject<ExpandoObject>(content);
+
+                return new HttpResponseDTO { StatusCode = response.StatusCode, Data = res };
             }
         }
     }

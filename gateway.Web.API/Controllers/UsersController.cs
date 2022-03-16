@@ -3,6 +3,8 @@ using gateway.Infrastructure.Utils;
 using gateway.Web.API.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Net;
 
 namespace gateway.Web.API.Controllers
 {
@@ -35,15 +37,20 @@ namespace gateway.Web.API.Controllers
             try
             {
                 var response = await _httpClientService.Get(Constants.USERS_MICROSERVICE_API, "Users", "GetById", id.ToString());
-                response.EnsureSuccessStatusCode();
 
-                var content = await response.Content.ReadAsStringAsync();
 
-                return Ok(content);
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    return Ok(response.Data);
+                }
+
+
+                return BadRequest(response.Data);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                _logger.LogError(ex.ToString());
+                return BadRequest(new {message = "Something went wrong."});
             }
         }
     }
