@@ -26,13 +26,6 @@
     <ProjectReference Include="..\gateway.Data.Access\gateway.Data.Access.csproj" />
     <ProjectReference Include="..\gateway.Data.SQL\gateway.Data.SQL.csproj" />
     <ProjectReference Include="..\gateway.Infrastructure\gateway.Infrastructure.csproj" />
-    <ProjectReference Include="..\microservice.Data.Access\gateway.Data.Access.csproj" />
-    <ProjectReference Include="..\microservice.Data.SQL\gateway.Data.SQL.csproj" />
-    <ProjectReference Include="..\microservice.Infrastructure\gateway.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

@@ -32,6 +32,17 @@ namespace gateway.Data.Access.Services
             }
         }
 
+        public async Task<HttpResponseMessage> Get(string service, string controller, string action, string urlParameter)
+        {
+            var httpClient = _httpClientFactory.CreateClient("localhost");
+
+            using (var response = await httpClient.GetAsync(_configuration.GetValue<string>($"{service}/{controller}/{action}/{urlParameter}")))
+            {
+                return response;
+            }
+        }
+
+
         public async Task<HttpResponseMessage> Post(string service, string controller, string action , object values)
         {
             var httpClient = _httpClientFactory.CreateClient("localhost");

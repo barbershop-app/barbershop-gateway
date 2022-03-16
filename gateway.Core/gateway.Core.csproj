@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\microservice.Infrastructure\gateway.Infrastructure.csproj" />
+    <ProjectReference Include="..\gateway.Infrastructure\gateway.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

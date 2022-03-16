@@ -9,6 +9,7 @@ namespace gateway.Core.IServices
     public interface IHttpClientService
     {
         Task<HttpResponseMessage> Get(string service, string controller, string action);
+        Task<HttpResponseMessage> Get(string service, string controller, string action, string urlParameter);
         Task<HttpResponseMessage> Post(string service, string controller, string action, object values);
     }
 }
