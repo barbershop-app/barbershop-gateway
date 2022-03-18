@@ -1,4 +1,5 @@
 ﻿using gateway.Core.IServices;
+using gateway.Infrastructure.Entities.DTOs;
 using gateway.Infrastructure.Utils;
 using gateway.Web.API.Authentication;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,7 @@ namespace gateway.Web.API.Controllers
             return Ok("The user is logged in.");
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetById/{id}")]
         public async Task<IActionResult> GetById(Guid id)
@@ -40,9 +42,8 @@ namespace gateway.Web.API.Controllers
 
 
                 if (response.StatusCode == HttpStatusCode.OK)
-                {
                     return Ok(response.Data);
-                }
+                
 
 
                 return BadRequest(response.Data);
@@ -53,5 +54,30 @@ namespace gateway.Web.API.Controllers
                 return BadRequest(new {message = "Something went wrong."});
             }
         }
+
+        [HttpPost]
+        [Route("Create")]
+        public async Task<IActionResult> Create([FromBody] UserDTOs.Create dto)
+        {
+            try
+            {
+                var response = await _httpClientService.Post(Constants.USERS_MICROSERVICE_API, "Users", "Create", dto);
+
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                    return Ok(response.Data);
+
+
+                return BadRequest(response.Data);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return BadRequest(new { message = "Something went wrong." });
+            }
+        }
+
+
+
     }
 }
