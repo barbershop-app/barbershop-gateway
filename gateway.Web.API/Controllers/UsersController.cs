@@ -45,13 +45,33 @@ namespace gateway.Web.API.Controllers
                     return Ok(response.Data);
                 
 
-
                 return BadRequest(response.Data);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.ToString());
                 return BadRequest(new {message = "Something went wrong."});
+            }
+        }
+
+        [HttpPost]
+        [Route("Authenticate")]
+        public async Task<IActionResult> Authenticate([FromBody] UserDTOs.Authenticate dto)
+        {
+            try
+            {
+                var response = await _httpClientService.Post(Constants.USERS_MICROSERVICE_API, "Users", "Authenticate", dto);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                    return Ok(response.Data);
+
+
+                return BadRequest(response.Data);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return BadRequest(new { message = "Something went wrong." });
             }
         }
 
@@ -77,7 +97,51 @@ namespace gateway.Web.API.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost]
+        [Route("Update")]
+        public async Task<IActionResult> Update([FromBody] UserDTOs.Update dto)
+        {
+            try
+            {
+                var response = await _httpClientService.Post(Constants.USERS_MICROSERVICE_API, "Users", "Update", dto);
 
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                    return Ok(response.Data);
+
+
+                return BadRequest(response.Data);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return BadRequest(new { message = "Something went wrong." });
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("Delete/{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                var response = await _httpClientService.Delete(Constants.USERS_MICROSERVICE_API, "Users", "Delete", id.ToString());
+
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                    return Ok(response.Data);
+
+
+                return BadRequest(response.Data);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return BadRequest(new { message = "Something went wrong." });
+            }
+        }
 
     }
 }

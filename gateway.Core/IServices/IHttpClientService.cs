@@ -12,5 +12,6 @@ namespace gateway.Core.IServices
         Task<HttpResponseDTO> Get(string service, string controller, string action);
         Task<HttpResponseDTO> Get(string service, string controller, string action, string urlParameter);
         Task<HttpResponseDTO> Post(string service, string controller, string action, object values);
+        Task<HttpResponseDTO> Delete(string service, string controller, string action, string id);
     }
 }

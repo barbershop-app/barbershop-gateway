@@ -70,5 +70,25 @@ namespace gateway.Data.Access.Services
                 return new HttpResponseDTO { StatusCode = response.StatusCode, Data = res };
             }
         }
+
+        public async Task<HttpResponseDTO> Delete(string service, string controller, string action, string id)
+        {
+            var httpClient = _httpClientFactory.CreateClient("localhost");
+
+            var json = JsonConvert.SerializeObject(new {});
+
+            var context = new StringContent(json, Encoding.UTF8, "application/json");
+
+            using (var response = await httpClient.PostAsync($"{_configuration.GetValue<string>(service)}/{controller}/{action}/{id}", context))
+            {
+                var content = await response.Content.ReadAsStringAsync();
+
+                ExpandoObject? res = JsonConvert.DeserializeObject<ExpandoObject>(content);
+
+                return new HttpResponseDTO { StatusCode = response.StatusCode, Data = res };
+            }
+        }
+
+
     }
 }

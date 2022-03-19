@@ -24,6 +24,7 @@ namespace gateway.Web.API.Authentication
 
             await _next(context);
 
+
         }
 
         private void AttachUserToContext(HttpContext context, APIGatewayContext dbcontext, string token)
