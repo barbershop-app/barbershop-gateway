@@ -1,12 +1,14 @@
 ﻿using gateway.Core.IServices;
 using gateway.Infrastructure.Entities.DTOs;
 using gateway.Infrastructure.Utils;
+using gateway.Web.API.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace gateway.Web.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AppointmentsController : ControllerBase
