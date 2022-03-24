@@ -23,10 +23,7 @@ builder.AllowAnyHeader()
 .SetIsOriginAllowed(origin => true)
 ));
 
-builder.Services.AddHttpClient("localhost").ConfigurePrimaryHttpMessageHandler(_ => new HttpClientHandler
-{
-    ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; }
-});
+builder.Services.AddHttpClient("localhost");
 
 builder.Services.AddDbContext<APIGatewayContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("sqlCon"), b => b.MigrationsAssembly("microservice.Data.SQL")));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -69,6 +66,11 @@ app.UseMiddleware<JWTMiddleware>();
 
 app.MapControllers();
 
-app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    options.RoutePrefix = String.Empty;
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "barbershop-gateway");
+    options.InjectStylesheet("/swagger/custom.css");
+});
 
 app.Run();
