@@ -45,7 +45,6 @@ namespace gateway.Web.API.Controllers
                 _logger.LogError(ex.ToString());
                 return BadRequest(new { message = "Something went wrong." });
             }
-
         }
 
 
