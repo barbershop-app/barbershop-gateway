@@ -11,6 +11,8 @@ namespace gateway.Infrastructure.Entities.DTOs
         public class Create
         {
             public string Name { get; set; }
+            public string? ImageSource { get; set; }
+
 
         }
 

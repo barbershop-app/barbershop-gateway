@@ -23,6 +23,33 @@ namespace gateway.Web.API.Controllers
         }
 
 
+
+        [HttpGet]
+        [Route("GetBookedAppointments/{Id}")]
+        public async Task<IActionResult> GetBookedAppointments(Guid Id)
+        {
+            try
+            {
+                var response = await _httpClientService.Get(Constants.APPOINTMENTS_MICROSERVICE_API, "Appointments", $"GetBookedAppointments/{Id}");
+
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                    return Ok(response.Data);
+
+
+                return BadRequest(response.Data);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return BadRequest(new { message = "Something went wrong." });
+            }
+        }
+
+
+
+
+
         [HttpPost]
         [Route("AvailableSlots")]
         public async Task<IActionResult> AvailableSlots([FromBody] AppointmentDTOs.AvailableSlots dto)

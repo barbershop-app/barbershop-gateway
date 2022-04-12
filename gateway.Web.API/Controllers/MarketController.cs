@@ -8,7 +8,7 @@ using System.Net;
 
 namespace gateway.Web.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MarketController : ControllerBase
@@ -78,7 +78,7 @@ namespace gateway.Web.API.Controllers
 
             try
             {
-                var response = await _httpClientService.Post(Constants.MARKET_MICROSERVICE_API, "Categories", "GetCategoryById", dto);
+                var response = await _httpClientService.Post(Constants.MARKET_MICROSERVICE_API, "Categories", "CreateCategory", dto);
 
 
                 if (response.StatusCode == HttpStatusCode.OK)
