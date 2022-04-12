@@ -25,12 +25,38 @@ namespace gateway.Web.API.Controllers
 
 
         [HttpGet]
-        [Route("GetBookedAppointments/{Id}")]
+        [Route("GetBookedAppointment/{Id}")]
         public async Task<IActionResult> GetBookedAppointments(Guid Id)
         {
             try
             {
-                var response = await _httpClientService.Get(Constants.APPOINTMENTS_MICROSERVICE_API, "Appointments", $"GetBookedAppointments/{Id}");
+                var response = await _httpClientService.Get(Constants.APPOINTMENTS_MICROSERVICE_API, "Appointments", $"GetBookedAppointment/{Id}");
+
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                    return Ok(response.Data);
+
+
+                return BadRequest(response.Data);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());
+                return BadRequest(new { message = "Something went wrong." });
+            }
+        }
+
+
+
+
+
+        [HttpGet]
+        [Route("GetTodayAppointments")]
+        public async Task<IActionResult> GetTodayAppointments()
+        {
+            try
+            {
+                var response = await _httpClientService.Get(Constants.APPOINTMENTS_MICROSERVICE_API, "Appointments", $"GetTodayAppointments");
 
 
                 if (response.StatusCode == HttpStatusCode.OK)
